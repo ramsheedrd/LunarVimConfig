@@ -13,11 +13,11 @@ lvim.colorscheme = "catppuccin-mocha"
 -- lvim.builtin.lualine.options.theme = "nightfly"
 vim.opt.relativenumber = true
 vim.opt.cmdheight = 0
-vim.opt.foldenable = true
+vim.opt.foldenable = false
 vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
 
-lvim.transparent_window = true
+-- lvim.transparent_window = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -26,6 +26,11 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
+
+vim.cmd [[
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_global_ext = 0
+]]
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- unmap a default keymapping
@@ -82,6 +87,7 @@ lvim.builtin.which_key.mappings["r"] = {
 
 lvim.builtin.which_key.mappings["o"] = {'<cmd>Telescope buffers<CR>', "Open Buffers"}
 lvim.builtin.which_key.mappings["sT"] = {'<cmd>TodoTelescope<cr>', "Todo"}
+lvim.builtin.which_key.mappings["n"] = {'<cmd>BufferLineCycleNext<CR>', "Next Buffer"}
 -- lvim.builtin.which_key.mappings["t"] = <{
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
@@ -163,20 +169,20 @@ lvim.builtin.treesitter.highlight.enable = true
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
---   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "black", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" } },
+  {
+    -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+    command = "prettier",
+    ---@usage arguments to pass to the formatter
+    -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+    extra_args = { "--print-with", "100" },
+    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+    filetypes = { "typescript", "typescriptreact" },
+  },
+}
 
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
@@ -206,6 +212,12 @@ linters.setup {
       "javascript",
       "typescriptreact",
       "typescript",
+    }
+  },
+  {
+    command = "mypy",
+    filetypes = {
+      "python",
     }
   }
 }
@@ -254,9 +266,20 @@ lvim.plugins = {
       cmd = { "TodoTrouble", "TodoTelescope" },
       event = "BufReadPost",
       config = true,
+    },
+    {
+      "vimwiki/vimwiki",
+    },
+    {
+      "tools-life/taskwiki"
+    },
+    {
+      "windwp/nvim-ts-autotag",
+      config = function()
+        require("nvim-ts-autotag").setup()
+      end,
     }
 }
-
 
 -- Debug Configuration
 lvim.builtin.dap.active = true
@@ -284,6 +307,8 @@ require('pretty-fold').setup({
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
+
+
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -297,3 +322,10 @@ require("luasnip.loaders.from_vscode").lazy_load()
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
+
+-- add `pyright` to `skipped_servers` list
+-- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+-- remove `jedi_language_server` from `skipped_servers` list
+-- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
+--   return server ~= "pylsp"
+-- end, lvim.lsp.automatic_configuration.skipped_servers)
