@@ -16,6 +16,7 @@ Copy fish_config/ in ~/.config/fish/
 
 ## Termainal
 Import gnome-terminal-profiles.dconf
+dconf load /org/gnome/terminal/legacy/profiles:/ < gnome-terminal-profiles.dconf
 
 ## IDE
 Copy .ide.sh to ~/
