@@ -25,6 +25,10 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#folde
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"
+lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
+lvim.keys.normal_mode["n"] = "nzz"
+lvim.keys.normal_mode["N"] = "Nzz"
 lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
 
 vim.cmd [[
@@ -102,7 +106,7 @@ lvim.builtin.which_key.mappings["n"] = {'<cmd>BufferLineCycleNext<CR>', "Next Bu
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.alpha.active = true
+lvim.builtin.alpha.active = false 
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
@@ -152,11 +156,11 @@ lvim.builtin.treesitter.highlight.enable = true
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
--- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
--- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
--- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "emmet_ls"
--- end, lvim.lsp.automatic_configuration.skipped_servers)
+---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
+---`:LvimInfo` lists which server(s) are skipped for the current filetype
+lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
+  return server ~= "emmet_ls"
+end, lvim.lsp.automatic_configuration.skipped_servers)
 
 -- -- you can set a custom on_attach function that will be used for all the language servers
 -- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
@@ -232,53 +236,80 @@ code_actions.setup {
 
 
 lvim.plugins = {
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "wojciechkepka/vim-github-dark",
+  },
+  {
+    "catppuccin/nvim",
+  },
+  {
+    "ThePrimeagen/harpoon",
+  },
+  {
+    "bluz71/vim-nightfly-colors"
+  },
+  {
+    'mfussenegger/nvim-dap'
+  },
+  {
+    "mfussenegger/nvim-dap-python",
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+  },
+  {
+    "anuvyklack/pretty-fold.nvim",
+  },
+  {
+    "windwp/nvim-spectre",
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    cmd = { "TodoTrouble", "TodoTelescope" },
+    event = "BufReadPost",
+    config = true,
+  },
+  {
+    "vimwiki/vimwiki",
+  },
+  {
+    "tools-life/taskwiki"
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "o", "x" }, function() require("flash").jump(
+        {
+          search = {
+            mode = function(str)
+              return "\\<" .. str
+            end,
+          },
+        }
+      ) end, desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
-    {
-      "wojciechkepka/vim-github-dark",
-    },
-    {
-      "catppuccin/nvim",
-    },
-    {
-      "ThePrimeagen/harpoon",
-    },
-    {
-      "bluz71/vim-nightfly-colors"
-    },
-    {
-      "mfussenegger/nvim-dap-python",
-    },
-    {
-      "anuvyklack/pretty-fold.nvim",
-    },
-    {
-      "windwp/nvim-spectre",
-      event = "BufRead",
-      config = function()
-        require("spectre").setup()
-      end,
-    },
-    {
-      "folke/todo-comments.nvim",
-      cmd = { "TodoTrouble", "TodoTelescope" },
-      event = "BufReadPost",
-      config = true,
-    },
-    {
-      "vimwiki/vimwiki",
-    },
-    {
-      "tools-life/taskwiki"
-    },
-    {
-      "windwp/nvim-ts-autotag",
-      config = function()
-        require("nvim-ts-autotag").setup()
-      end,
-    }
+  }
 }
 
 -- Debug Configuration
@@ -289,6 +320,13 @@ local dap_python = require 'dap-python'
 dap_python.setup('/usr/bin/python3')
 
 local dap = require 'dap'
+
+dap.adapters.python_remote = {
+    type = 'server';
+    host = '127.0.0.1';
+    port = 8001;
+}
+
 dap.configurations.python = {
   {
     type = 'python';
@@ -296,7 +334,29 @@ dap.configurations.python = {
     name = "Launch file";
     program = "${file}";
   },
+  {
+    type = 'python_remote',
+    name = 'Generic remote',
+    request = 'attach',
+    pathMappings = {{
+      -- Update this as needed
+      localRoot = vim.fn.getcwd();
+      remoteRoot = "/";
+    }};
+  },
 }
+
+local dap, dapui =require("dap"),require("dapui")
+dap.listeners.after.event_initialized["dapui_config"]=function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"]=function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"]=function()
+  dapui.close()
+end
+
 
 require('pretty-fold').setup({
   matchup_patterns = {
@@ -329,3 +389,5 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
 --   return server ~= "pylsp"
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
+--
+
