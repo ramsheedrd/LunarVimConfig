@@ -92,8 +92,9 @@ lvim.builtin.which_key.mappings["r"] = {
 lvim.builtin.which_key.mappings["o"] = {'<cmd>Telescope buffers<CR>', "Open Buffers"}
 lvim.builtin.which_key.mappings["sT"] = {'<cmd>TodoTelescope<cr>', "Todo"}
 lvim.builtin.which_key.mappings["n"] = {'<cmd>BufferLineCycleNext<CR>', "Next Buffer"}
--- lvim.builtin.which_key.mappings["t"] = <{
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["lw"] = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" }
+lvim.builtin.which_key.mappings["ld"] = { "<cmd>Trouble document_diagnostics<cr>", "Document Diagnostics" }
+
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
