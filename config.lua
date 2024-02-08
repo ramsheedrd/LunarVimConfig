@@ -238,6 +238,20 @@ code_actions.setup {
 
 lvim.plugins = {
   {
+    "laytan/cloak.nvim",
+    config = function()
+      require("cloak").setup({
+        patterns = {
+          {
+            file_pattern = '*.env',
+            cloak_pattern = '=.+',
+            replace = nil,
+          },
+        },
+      })
+    end,
+  },
+  {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
