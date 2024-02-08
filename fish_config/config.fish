@@ -17,10 +17,14 @@ alias lla "ll -A"
 alias g git
 alias ide "~/.ide.sh"
 alias v "lvim"
+alias vc "lvim ."
 alias lg "lazygit"
 alias tmux "tmux -u"
 command -qv nvim && alias vim nvim
 bind \cr fzf_history
+
+# zo bindings
+set -U ZO_METHOD "lvim"
 
 set -gx EDITOR nvim
 
@@ -63,3 +67,7 @@ if test -f $LOCAL_CONFIG
   source $LOCAL_CONFIG
 end
 
+# Remove title bar
+# eval 'xdotool keydown Super'
+# eval 'xdotool key u'
+# eval 'xdotool keyup Super'
