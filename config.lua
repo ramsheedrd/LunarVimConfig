@@ -31,6 +31,8 @@ lvim.keys.normal_mode["n"] = "nzz"
 lvim.keys.normal_mode["N"] = "Nzz"
 lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
 
+lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv"
+lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv"
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
