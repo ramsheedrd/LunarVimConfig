@@ -16,7 +16,7 @@ vim.opt.cmdheight = 0
 vim.opt.foldenable = false
 vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
-
+vim.g.copilot_assume_mapped = true
 -- lvim.transparent_window = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -30,7 +30,6 @@ lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
 lvim.keys.normal_mode["n"] = "nzz"
 lvim.keys.normal_mode["N"] = "Nzz"
 lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
-
 lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv"
 lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv"
 lvim.keys.normal_mode["-"] = ":Oil<CR>"
@@ -276,6 +275,9 @@ lvim.plugins = {
   },
   {
     "rcarriga/nvim-dap-ui",
+  },
+  {
+    "github/copilot.vim",
   },
   {
     "stevearc/oil.nvim",
