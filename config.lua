@@ -33,6 +33,7 @@ lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
 
 lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv"
 lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv"
+lvim.keys.normal_mode["-"] = ":Oil<CR>"
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
@@ -275,6 +276,16 @@ lvim.plugins = {
   },
   {
     "rcarriga/nvim-dap-ui",
+  },
+  {
+    "stevearc/oil.nvim",
+    config = function ()
+      require("oil").setup({
+        keymaps = {
+          ["l"] = "actions.select",
+        },
+      })
+    end
   },
   {
     "anuvyklack/pretty-fold.nvim",
