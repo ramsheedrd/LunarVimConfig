@@ -24,15 +24,15 @@ vim.g.copilot_assume_mapped = true
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"
-lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
-lvim.keys.normal_mode["n"] = "nzz"
-lvim.keys.normal_mode["N"] = "Nzz"
-lvim.keys.insert_mode["<C-e>"] = "<C-o>A"
-lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv"
-lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv"
-lvim.keys.normal_mode["-"] = ":Oil<CR>"
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>" -- 
+lvim.keys.normal_mode["<C-u>"] = "<C-u>zz" -- center after page up
+lvim.keys.normal_mode["<C-d>"] = "<C-d>zz" -- center after page down
+lvim.keys.normal_mode["n"] = "nzz" -- center after search
+lvim.keys.normal_mode["N"] = "Nzz" -- center after search
+lvim.keys.insert_mode["<C-e>"] = "<C-o>A" -- insert at the end of the line
+lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv" -- shift code upper
+lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv" -- shift code lower
+lvim.keys.normal_mode["-"] = ":Oil<CR>" -- open oil
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
