@@ -9,6 +9,14 @@
 * tmux
 * gTile extension for cinnemon
 * cinnemon maximus extension for cinnemon
+* nala - installer
+* kondo - cleans up node modules
+* jq - json query
+* gh - http request
+* jless - json viewer
+* github CLI
+* Gitbutler
+* bat - cat clone
 
 ## LunarVim
 Copy config.lua in ~/.config/lvim/
@@ -19,6 +27,10 @@ Copy fish_config/ in ~/.config/fish/
 ## Termainal
 Import gnome-terminal-profiles.dconf
 dconf load /org/gnome/terminal/legacy/profiles:/ < gnome-terminal-profiles.dconf
+
+## Extension
+* Hopescotch
+* Vimium
 
 ## IDE
 Copy .ide.sh to ~/
