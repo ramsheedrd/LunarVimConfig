@@ -7,6 +7,7 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 -- general
+
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
 lvim.colorscheme = "catppuccin-mocha"
@@ -61,15 +62,42 @@ let g:vimwiki_global_ext = 0
 --     ["<C-k>"] = actions.move_selection_previous,
 --   },
 -- }
+--
+
+
 
 lvim.builtin.telescope.on_config_done = function(telescope)
   telescope.load_extension "harpoon"
+  local colors = require("catppuccin.palettes").get_palette()
+  local TelescopeColor = {
+    TelescopeMatching = { fg = colors.flamingo },
+    TelescopeSelection = { fg = colors.text, bg = colors.surface0, bold = true },
+
+    TelescopePromptPrefix = { bg = colors.surface0 },
+    TelescopePromptNormal = { bg = colors.surface0 },
+    TelescopeResultsNormal = { bg = colors.mantle },
+    TelescopePreviewNormal = { bg = colors.mantle },
+    TelescopePromptBorder = { bg = colors.surface0, fg = colors.surface0 },
+    TelescopeResultsBorder = { bg = colors.mantle, fg = colors.mantle },
+    TelescopePreviewBorder = { bg = colors.mantle, fg = colors.mantle },
+    TelescopePromptTitle = { bg = colors.pink, fg = colors.mantle },
+    TelescopeResultsTitle = { fg = colors.mantle },
+    TelescopePreviewTitle = { bg = colors.green, fg = colors.mantle },
+  }
+
+  for hl, col in pairs(TelescopeColor) do
+    vim.api.nvim_set_hl(0, hl, col)
+  end
 end
 
--- Change theme settings
--- lvim.builtin.theme.options.dim_inactive = true
--- lvim.builtin.theme.options.style = "storm"
--- Use which-key to add extra bindings with the leader-key prefix
+-- horizontal layout for live grep picker
+lvim.builtin.telescope.pickers.live_grep = {
+  layout_strategy = "horizontal",
+  layout_config = {
+    width = 0.9,
+    height = 0.8,
+  },
+}
 
 ---- Harpoon Keybinding
 lvim.builtin.which_key.mappings["1"] = {'<cmd>lua require("harpoon.ui").nav_file(1)<CR>', "Goto File 1"}
@@ -277,6 +305,9 @@ lvim.plugins = {
     "rcarriga/nvim-dap-ui",
   },
   {
+    'nyoom-engineering/oxocarbon.nvim'
+  },
+  {
     "github/copilot.vim",
     init = function()
       vim.g.copilot_no_tab_map = true
@@ -429,4 +460,5 @@ require("luasnip.loaders.from_vscode").lazy_load()
 --   return server ~= "pylsp"
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
 --
+
 
