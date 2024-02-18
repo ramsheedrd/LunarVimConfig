@@ -20,6 +20,7 @@ alias v "lvim"
 alias vc "lvim ."
 alias lg "lazygit"
 alias tmux "tmux -u"
+alias cat "batcat"
 command -qv nvim && alias vim nvim
 bind \cr fzf_history
 
