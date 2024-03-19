@@ -1,21 +1,27 @@
 --[[ lvim is the global options object
 
 Linters should be
-filled in as strings with either
 a global executable or a path to
+filled in as strings with either
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 -- general
 
+if vim.loader then
+  vim.loader.enable()
+end
+
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
-lvim.colorscheme = "catppuccin-mocha"
+-- lvim.colorscheme = "catppuccin-mocha"
+lvim.colorscheme = "oh-lucy"
 -- lvim.builtin.lualine.options.theme = "nightfly"
+--
 vim.opt.relativenumber = true
 vim.opt.cmdheight = 0
 vim.opt.foldenable = false
-vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
+vim.opt.foldmethod = "expr"                     -- folding set to "expr" for treesitter based folding
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
 vim.g.copilot_assume_mapped = true
 -- lvim.transparent_window = true
@@ -25,15 +31,15 @@ vim.g.copilot_assume_mapped = true
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>" -- 
-lvim.keys.normal_mode["<C-u>"] = "<C-u>zz" -- center after page up
-lvim.keys.normal_mode["<C-d>"] = "<C-d>zz" -- center after page down
-lvim.keys.normal_mode["n"] = "nzz" -- center after search
-lvim.keys.normal_mode["N"] = "Nzz" -- center after search
-lvim.keys.insert_mode["<C-e>"] = "<C-o>A" -- insert at the end of the line
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"       --
+lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"      -- center after page up
+lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"      -- center after page down
+lvim.keys.normal_mode["n"] = "nzz"              -- center after search
+lvim.keys.normal_mode["N"] = "Nzz"              -- center after search
+lvim.keys.insert_mode["<C-e>"] = "<C-o>A"       -- insert at the end of the line
 lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv" -- shift code upper
 lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv" -- shift code lower
-lvim.keys.normal_mode["-"] = ":Oil<CR>" -- open oil
+lvim.keys.normal_mode["-"] = ":Oil<CR>"         -- open oil
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
@@ -68,25 +74,29 @@ let g:vimwiki_global_ext = 0
 
 lvim.builtin.telescope.on_config_done = function(telescope)
   telescope.load_extension "harpoon"
-  local colors = require("catppuccin.palettes").get_palette()
-  local TelescopeColor = {
-    TelescopeMatching = { fg = colors.flamingo },
-    TelescopeSelection = { fg = colors.text, bg = colors.surface0, bold = true },
 
-    TelescopePromptPrefix = { bg = colors.surface0 },
-    TelescopePromptNormal = { bg = colors.surface0 },
-    TelescopeResultsNormal = { bg = colors.mantle },
-    TelescopePreviewNormal = { bg = colors.mantle },
-    TelescopePromptBorder = { bg = colors.surface0, fg = colors.surface0 },
-    TelescopeResultsBorder = { bg = colors.mantle, fg = colors.mantle },
-    TelescopePreviewBorder = { bg = colors.mantle, fg = colors.mantle },
-    TelescopePromptTitle = { bg = colors.pink, fg = colors.mantle },
-    TelescopeResultsTitle = { fg = colors.mantle },
-    TelescopePreviewTitle = { bg = colors.green, fg = colors.mantle },
-  }
+  local current_theme = vim.g.colors_name
+  if current_theme == "catppuccin" then
+    local colors = require("catppuccin.palettes").get_palette()
+    local TelescopeColor = {
+      TelescopeMatching = { fg = colors.flamingo },
+      TelescopeSelection = { fg = colors.text, bg = colors.surface0, bold = true },
 
-  for hl, col in pairs(TelescopeColor) do
-    vim.api.nvim_set_hl(0, hl, col)
+      TelescopePromptPrefix = { bg = colors.surface0 },
+      TelescopePromptNormal = { bg = colors.surface0 },
+      TelescopeResultsNormal = { bg = colors.mantle },
+      TelescopePreviewNormal = { bg = colors.mantle },
+      TelescopePromptBorder = { bg = colors.surface0, fg = colors.surface0 },
+      TelescopeResultsBorder = { bg = colors.mantle, fg = colors.mantle },
+      TelescopePreviewBorder = { bg = colors.mantle, fg = colors.mantle },
+      TelescopePromptTitle = { bg = colors.pink, fg = colors.mantle },
+      TelescopeResultsTitle = { fg = colors.mantle },
+      TelescopePreviewTitle = { bg = colors.green, fg = colors.mantle },
+    }
+
+    for hl, col in pairs(TelescopeColor) do
+      vim.api.nvim_set_hl(0, hl, col)
+    end
   end
 end
 
@@ -100,28 +110,32 @@ lvim.builtin.telescope.pickers.live_grep = {
 }
 
 ---- Harpoon Keybinding
-lvim.builtin.which_key.mappings["1"] = {'<cmd>lua require("harpoon.ui").nav_file(1)<CR>', "Goto File 1"}
-lvim.builtin.which_key.mappings["2"] = {'<cmd>lua require("harpoon.ui").nav_file(2)<CR>', "Goto File 2"}
-lvim.builtin.which_key.mappings["3"] = {'<cmd>lua require("harpoon.ui").nav_file(3)<CR>', "Goto File 3"}
-lvim.builtin.which_key.mappings["4"] = {'<cmd>lua require("harpoon.ui").nav_file(4)<CR>', "Goto File 4"}
+lvim.builtin.which_key.mappings["1"] = { '<cmd>lua require("harpoon.ui").nav_file(1)<CR>', "Goto File 1" }
+lvim.builtin.which_key.mappings["2"] = { '<cmd>lua require("harpoon.ui").nav_file(2)<CR>', "Goto File 2" }
+lvim.builtin.which_key.mappings["3"] = { '<cmd>lua require("harpoon.ui").nav_file(3)<CR>', "Goto File 3" }
+lvim.builtin.which_key.mappings["4"] = { '<cmd>lua require("harpoon.ui").nav_file(4)<CR>', "Goto File 4" }
 lvim.builtin.which_key.mappings["h"] = {
   name = 'Harpoon',
   a = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add" },
-  h = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Menu"},
-  n = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Next"},
-  p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Prev"}
+  h = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Menu" },
+  n = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Next" },
+  p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Prev" }
 }
 
 lvim.builtin.which_key.mappings["r"] = {
   name = 'Replace',
   r = { "<cmd>lua require('spectre').open_file_search()<CR>", "Replace In File" },
-  p = { "<cmd>lua require('spectre').open()<CR>", "Replace In Project"},
-  w = { "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", "Replace Current Word"},
+  p = { "<cmd>lua require('spectre').open()<CR>", "Replace In Project" },
+  w = { "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", "Replace Current Word" },
 }
 
-lvim.builtin.which_key.mappings["o"] = {'<cmd>Telescope buffers<CR>', "Open Buffers"}
-lvim.builtin.which_key.mappings["sT"] = {'<cmd>TodoTelescope<cr>', "Todo"}
-lvim.builtin.which_key.mappings["n"] = {'<cmd>BufferLineCycleNext<CR>', "Next Buffer"}
+lvim.builtin.which_key.mappings["o"] = { '<cmd>Telescope buffers<CR>', "Open Buffers" }
+lvim.builtin.which_key.mappings["sT"] = { '<cmd>TodoTelescope<cr>', "Todo" }
+lvim.builtin.which_key.mappings["ss"] = { '<cmd>Telescope current_buffer_fuzzy_find<cr>', "Find in buffer" }
+lvim.builtin.which_key.mappings["sc"] = {
+  '<cmd>lua require("telescope.builtin").current_buffer_fuzzy_find({default_text=vim.fn.expand("<cword>")})<cr>',
+  "Find current word in project" }
+lvim.builtin.which_key.mappings["n"] = { '<cmd>BufferLineCycleNext<CR>', "Next Buffer" }
 
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Trouble",
@@ -133,11 +147,14 @@ lvim.builtin.which_key.mappings["t"] = {
   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 }
 
+lvim.builtin.which_key.mappings["e"] = {}
+
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.alpha.active = false 
+lvim.builtin.alpha.active = false
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.nvimtree.active = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -286,6 +303,7 @@ lvim.plugins = {
   {
     "wojciechkepka/vim-github-dark",
   },
+  { "Yazeed1s/oh-lucy.nvim" },
   {
     "catppuccin/nvim",
   },
@@ -312,18 +330,18 @@ lvim.plugins = {
     init = function()
       vim.g.copilot_no_tab_map = true
     end,
-    config = function()
-      vim.keymap.set('i', '<C-w>', [[copilot#Accept("\<CR>")]], {
-        silent = true,
-        expr = true,
-        script = true,
-        replace_keycodes = false,
-      })
-    end,
+    -- config = function()
+    --   vim.keymap.set('i', '<C-w>', [[copilot#Accept("\<CR>")]], {
+    --     silent = true,
+    --     expr = true,
+    --     script = true,
+    --     replace_keycodes = false,
+    --   })
+    -- end,
   },
   {
     "stevearc/oil.nvim",
-    config = function ()
+    config = function()
       require("oil").setup({
         keymaps = {
           ["l"] = "actions.select",
@@ -365,19 +383,50 @@ lvim.plugins = {
     opts = {},
     -- stylua: ignore
     keys = {
-      { "s", mode = { "n", "o", "x" }, function() require("flash").jump(
-        {
-          search = {
-            mode = function(str)
-              return "\\<" .. str
-            end,
-          },
-        }
-      ) end, desc = "Flash" },
-      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      {
+        "s",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump(
+            {
+              search = {
+                mode = function(str)
+                  return "\\<" .. str
+                end,
+              },
+            }
+          )
+        end,
+        desc = "Flash"
+      },
+      { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      {
+        "<Leader>j",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump({
+            search = { mode = "search", max_length = 0 },
+            label = { after = { 0, 0 } },
+            pattern = "^"
+          })
+        end,
+        desc = "Flash Treesitter"
+      },
+      {
+        "<Leader>k",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump({
+            search = { mode = "search", max_length = 0 },
+            label = { after = { 0, 0 } },
+            pattern = "^"
+          })
+        end,
+        desc = "Flash Treesitter"
+      },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   }
 }
@@ -392,48 +441,48 @@ dap_python.setup('/usr/bin/python3')
 local dap = require 'dap'
 
 dap.adapters.python_remote = {
-    type = 'server';
-    host = '127.0.0.1';
-    port = 8001;
+  type = 'server',
+  host = '127.0.0.1',
+  port = 8001,
 }
 
 dap.configurations.python = {
   {
-    type = 'python';
-    request = 'launch';
-    name = "Launch file";
-    program = "${file}";
+    type = 'python',
+    request = 'launch',
+    name = "Launch file",
+    program = "${file}",
   },
   {
     type = 'python_remote',
     name = 'Generic remote',
     request = 'attach',
-    pathMappings = {{
+    pathMappings = { {
       -- Update this as needed
-      localRoot = vim.fn.getcwd();
-      remoteRoot = "/";
-    }};
+      localRoot = vim.fn.getcwd(),
+      remoteRoot = "/",
+    } },
   },
 }
 
-local dap, dapui =require("dap"),require("dapui")
-dap.listeners.after.event_initialized["dapui_config"]=function()
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end
-dap.listeners.before.event_terminated["dapui_config"]=function()
+dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
 end
-dap.listeners.before.event_exited["dapui_config"]=function()
+dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
 
 require('pretty-fold').setup({
   matchup_patterns = {
-    {  '{', '}' },
+    { '{',  '}' },
     { '%(', ')' }, -- % to escape lua pattern char
     { '%[', ']' }, -- % to escape lua pattern char
- },
+  },
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -460,5 +509,4 @@ require("luasnip.loaders.from_vscode").lazy_load()
 --   return server ~= "pylsp"
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
 --
-
-
+--
