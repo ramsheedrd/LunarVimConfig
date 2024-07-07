@@ -1,0 +1,18 @@
+[git_metrics]
+disabled = false
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+up_to_date = '✓'
+
+[python]
+format = '[($virtualenv )]($style)'
+[nodejs]
+disabled = true
+[gcloud]
+disabled = true
+[aws]
+disabled = true

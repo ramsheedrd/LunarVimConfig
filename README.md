@@ -17,6 +17,7 @@
 * github CLI
 * Gitbutler
 * bat - cat clone
+* kitty
 
 ## LunarVim
 Copy config.lua in ~/.config/lvim/
