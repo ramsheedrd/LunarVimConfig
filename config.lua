@@ -16,7 +16,8 @@ lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
 -- lvim.colorscheme = "catppuccin-mocha"
 lvim.colorscheme = "oh-lucy"
--- lvim.builtin.lualine.options.theme = "nightfly"
+lvim.builtin.bufferline.active = false
+lvim.builtin.lualine.options.theme = "nightfly"
 --
 vim.opt.relativenumber = true
 vim.opt.cmdheight = 0
@@ -28,9 +29,11 @@ vim.g.copilot_assume_mapped = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
+lvim.keys.normal_mode["<C-x>"] = ":BufferKill<cr>"       --
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"       --
 lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"      -- center after page up
 lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"      -- center after page down
