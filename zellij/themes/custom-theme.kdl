@@ -1,0 +1,15 @@
+themes {
+    custom-theme {
+        fg 111 121 163
+        bg 26 27 38
+        black 27 29 38
+        red 249 51 87
+        green 21 252 162
+        yellow 21 252 162
+        blue 122 162 247
+        magenta 187 154 247
+        cyan 42 195 222
+        white 111 121 163
+        orange 232 90 133
+    }
+}
