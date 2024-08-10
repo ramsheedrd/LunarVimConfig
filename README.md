@@ -18,6 +18,10 @@
 * Gitbutler
 * bat - cat clone
 * kitty
+* zellig
+* sshs
+* atac
+* portal
 
 ## LunarVim
 Copy config.lua in ~/.config/lvim/
