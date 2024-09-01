@@ -1,0 +1,86 @@
+[
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "shift-k": "editor::Hover",
+      "space l a": "editor::ToggleCodeActions",
+      "space l f": "editor::Format",
+      "space l r": "editor::Rename",
+      "space l d": "diagnostics::Deploy",
+      "space f": "file_finder::Toggle",
+      "space o": "tab_switcher::Toggle",
+      "space s t": "pane::DeploySearch",
+      "space e": "workspace::ToggleLeftDock",
+      "space p": "outline::Toggle",
+      "space v": "editor::GoToDefinitionSplit",
+      "space /": "vim::ToggleComments",
+      "space c": "pane::CloseActiveItem",
+      "space w": "workspace::Save",
+      "ctrl-t": "terminal_panel::ToggleFocus",
+      "ctrl-w v": "pane::SplitRight",
+      "ctrl-h": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-l": ["workspace::ActivatePaneInDirection", "Right"],
+      "ctrl-k": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-j": ["workspace::ActivatePaneInDirection", "Down"]
+      // put key-bindings here if you want them to work in normal & visual mode
+    }
+  },
+  {
+    "context": "Editor && (showing_code_actions || showing_completions) && vim_mode == insert",
+    "bindings": {
+      "tab": "editor::ContextMenuNext"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp"
+    }
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore" // remap jk in insert mode to escape.
+    }
+  },
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      // put key-bindings here (in addition to above) if you want them to
+      // work when no editor exists
+      "space f": "file_finder::Toggle",
+      "space e": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    // netrw compatibility
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "n": "project_panel::NewFile",
+      "ctrl-l": "project_panel::ToggleFocus",
+      "space e": "workspace::ToggleLeftDock",
+      "space": null,
+      "l": "project_panel::Open",
+      "space f": "file_finder::Toggle",
+      "ctrl-t": "terminal_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "TabSwitcher",
+    "bindings": {
+      "tab": "menu::SelectNext"
+      // put key-bindings here if you want them to work in normal & visual mode
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-t": "workspace::ToggleBottomDock"
+    }
+  },
+  {
+    "context": "FileFinder && editing",
+    "bindings": { "tab": "file_finder::SelectPrev" }
+  }
+]
