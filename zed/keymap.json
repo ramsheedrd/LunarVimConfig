@@ -10,6 +10,8 @@
       "space f": "file_finder::Toggle",
       "space o": "tab_switcher::Toggle",
       "space s t": "pane::DeploySearch",
+      "space b": "pane::ActivatePrevItem",
+      "space n": "pane::ActivateNextItem",
       "space e": "workspace::ToggleLeftDock",
       "space p": "outline::Toggle",
       "space v": "editor::GoToDefinitionSplit",
@@ -50,7 +52,8 @@
       // put key-bindings here (in addition to above) if you want them to
       // work when no editor exists
       "space f": "file_finder::Toggle",
-      "space e": "workspace::ToggleLeftDock"
+      "space e": "workspace::ToggleLeftDock",
+      "ctrl-t": "workspace::ToggleBottomDock"
     }
   },
   {
@@ -69,7 +72,9 @@
   {
     "context": "TabSwitcher",
     "bindings": {
-      "tab": "menu::SelectNext"
+      "tab": "menu::SelectNext",
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrev"
       // put key-bindings here if you want them to work in normal & visual mode
     }
   },
