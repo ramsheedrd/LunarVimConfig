@@ -1,13 +1,3 @@
---[[ lvim is the global options object
-
-Linters should be
-a global executable or a path to
-filled in as strings with either
-an executable
-]]
--- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
--- general
-
 if vim.loader then
   vim.loader.enable()
 end
@@ -17,8 +7,12 @@ lvim.format_on_save.enabled = false
 -- lvim.colorscheme = "catppuccin-mocha"
 lvim.colorscheme = "oh-lucy"
 lvim.builtin.bufferline.active = false
+lvim.builtin.autopairs.active = false
+lvim.builtin.dap.active = true
+
 lvim.builtin.lualine.options.theme = "nightfly"
 --
+
 vim.opt.relativenumber = true
 vim.opt.cmdheight = 0
 vim.opt.foldenable = false
@@ -33,46 +27,25 @@ vim.g.copilot_assume_mapped = true
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
-lvim.keys.normal_mode["<C-x>"] = ":BufferKill<cr>"       --
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"       --
-lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"      -- center after page up
-lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"      -- center after page down
-lvim.keys.normal_mode["n"] = "nzz"              -- center after search
-lvim.keys.normal_mode["N"] = "Nzz"              -- center after search
-lvim.keys.insert_mode["<C-e>"] = "<C-o>A"       -- insert at the end of the line
-lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv" -- shift code upper
-lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv" -- shift code lower
-lvim.keys.normal_mode["-"] = ":Oil<CR>"         -- open oil
+lvim.keys.normal_mode["<C-x>"] = ":BufferKill<cr>" --
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"          --
+lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"         -- center after page up
+lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"         -- center after page down
+lvim.keys.normal_mode["n"] = "nzz"                 -- center after search
+lvim.keys.normal_mode["N"] = "Nzz"                 -- center after search
+lvim.keys.insert_mode["<C-e>"] = "<C-o>A"          -- insert at the end of the line
+lvim.keys.visual_mode["K"] = ":m '>+1<CR>gv=gv"    -- shift code upper
+lvim.keys.visual_mode["J"] = ":m '>-2<CR>gv=gv"    -- shift code lower
+lvim.keys.normal_mode["-"] = ":Oil<CR>"            -- open oil
+-- lvim.keys.normal_mode["-"] = ":lua MiniFiles.open()<CR>"         -- open oil
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
 ]]
--- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
--- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
-
--- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
--- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
--- local _, actions = pcall(require, "telescope.actions")
--- lvim.builtin.telescope.defaults.mappings = {
---   -- for input mode
---   i = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---     ["<C-n>"] = actions.cycle_history_next,
---     ["<C-p>"] = actions.cycle_history_prev,
---   },
---   -- for normal mode
---   n = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---   },
--- }
---
-
 
 
 lvim.builtin.telescope.on_config_done = function(telescope)
@@ -117,6 +90,7 @@ lvim.builtin.which_key.mappings["1"] = { '<cmd>lua require("harpoon.ui").nav_fil
 lvim.builtin.which_key.mappings["2"] = { '<cmd>lua require("harpoon.ui").nav_file(2)<CR>', "Goto File 2" }
 lvim.builtin.which_key.mappings["3"] = { '<cmd>lua require("harpoon.ui").nav_file(3)<CR>', "Goto File 3" }
 lvim.builtin.which_key.mappings["4"] = { '<cmd>lua require("harpoon.ui").nav_file(4)<CR>', "Goto File 4" }
+lvim.builtin.which_key.mappings["u"] = { '<cmd>UndotreeToggle<CR>', "Undo Tree" }
 lvim.builtin.which_key.mappings["h"] = {
   name = 'Harpoon',
   a = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add" },
@@ -211,16 +185,6 @@ lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(serve
   return server ~= "emmet_ls"
 end, lvim.lsp.automatic_configuration.skipped_servers)
 
--- -- you can set a custom on_attach function that will be used for all the language servers
--- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
--- lvim.lsp.on_attach_callback = function(client, bufnr)
---   local function buf_set_option(...)
---     vim.api.nvim_buf_set_option(bufnr, ...)
---   end
---   --Enable completion triggered by <c-x><c-o>
---   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
--- end
-
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -300,11 +264,25 @@ lvim.plugins = {
     end,
   },
   {
+    "oysandvik94/curl.nvim",
+    cmd = { "CurlOpen" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = true,
+  },
+  {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
   {
     "wojciechkepka/vim-github-dark",
+  },
+  {
+    "wurli/visimatch.nvim",
+    config = function()
+      require("visimatch").setup()
+    end
   },
   { "Yazeed1s/oh-lucy.nvim" },
   {
@@ -317,16 +295,10 @@ lvim.plugins = {
     "bluz71/vim-nightfly-colors"
   },
   {
-    'mfussenegger/nvim-dap'
-  },
-  {
-    "mfussenegger/nvim-dap-python",
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-  },
-  {
     'nyoom-engineering/oxocarbon.nvim'
+  },
+  {
+    'mbbill/undotree'
   },
   {
     "stevearc/oil.nvim",
@@ -355,15 +327,64 @@ lvim.plugins = {
     config = true,
   },
   {
-    "vimwiki/vimwiki",
-  },
-  {
-    "tools-life/taskwiki"
-  },
-  {
     "windwp/nvim-ts-autotag",
     config = function()
       require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    'echasnovski/mini.surround',
+    version = '*',
+    config = function()
+      require("mini.surround").setup({
+        mappings = {
+          add = '<space>a',     -- Add surrounding in Normal and Visual modes
+          delete = '<space>D',  -- Delete surrounding
+          find = nil,           -- Find surrounding (to the right)
+          find_left = nil,      -- Find surrounding (to the left)
+          highlight = nil,      -- Highlight surrounding
+          replace = '<space>m', -- Replace surrounding
+          update_n_lines = nil, -- Update `n_lines`
+
+          suffix_last = 'l',    -- Suffix to search with "prev" method
+          suffix_next = 'n',    -- Suffix to search with "next" method
+        },
+      })
+    end,
+  },
+  {
+    'echasnovski/mini.splitjoin',
+    version = '*',
+    config = function()
+      require("mini.splitjoin").setup()
+    end,
+  },
+  {
+    'echasnovski/mini.files',
+    version = '*',
+    config = function()
+      require("mini.files").setup(
+        {
+          mappings = {
+            go_in_plus  = '<CR>',
+            go_out_plus = '-',
+          },
+        }
+      )
+    end,
+  },
+  {
+    'echasnovski/mini.pairs',
+    version = '*',
+    config = function()
+      require("mini.pairs").setup()
+    end,
+  },
+  {
+    'echasnovski/mini.ai',
+    version = '*',
+    config = function()
+      require("mini.ai").setup()
     end,
   },
   {
@@ -388,99 +409,17 @@ lvim.plugins = {
         end,
         desc = "Flash"
       },
-      { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
       {
-        "<Leader>j",
+        "S",
         mode = { "n", "o", "x" },
-        function()
-          require("flash").jump({
-            search = { mode = "search", max_length = 0 },
-            label = { after = { 0, 0 } },
-            pattern = "^"
-          })
-        end,
+        function() require("flash").treesitter() end,
         desc = "Flash Treesitter"
       },
-      {
-        "<Leader>k",
-        mode = { "n", "o", "x" },
-        function()
-          require("flash").jump({
-            search = { mode = "search", max_length = 0 },
-            label = { after = { 0, 0 } },
-            pattern = "^"
-          })
-        end,
-        desc = "Flash Treesitter"
-      },
-      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   }
 }
 
-  -- {
-  --   "github/copilot.vim",
-  --   init = function()
-  --     vim.g.copilot_no_tab_map = true
-  --   end,
-    -- config = function()
-    --   vim.keymap.set('i', '<C-w>', [[copilot#Accept("\<CR>")]], {
-    --     silent = true,
-    --     expr = true,
-    --     script = true,
-    --     replace_keycodes = false,
-    --   })
-    -- end,
-  -- },
-
--- Debug Configuration
-lvim.builtin.dap.active = true
-
--- python
-local dap_python = require 'dap-python'
-dap_python.setup('/usr/bin/python3')
-
-local dap = require 'dap'
-
-dap.adapters.python_remote = {
-  type = 'server',
-  host = '127.0.0.1',
-  port = 8001,
-}
-
-dap.configurations.python = {
-  {
-    type = 'python',
-    request = 'launch',
-    name = "Launch file",
-    program = "${file}",
-  },
-  {
-    type = 'python_remote',
-    name = 'Generic remote',
-    request = 'attach',
-    pathMappings = { {
-      -- Update this as needed
-      localRoot = vim.fn.getcwd(),
-      remoteRoot = "/",
-    } },
-  },
-}
-
-local dap, dapui = require("dap"), require("dapui")
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
-
-
+require('dap_config')
 require('pretty-fold').setup({
   matchup_patterns = {
     { '{',  '}' },
@@ -490,27 +429,3 @@ require('pretty-fold').setup({
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
-
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- vim.api.nvim_create_autocmd("BufEnter", {
---   pattern = { "*.json", "*.jsonc" },
---   -- enable wrap mode for json files only
---   command = "setlocal wrap",
--- })
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "zsh",
---   callback = function()
---     -- let treesitter use bash highlight for zsh files as well
---     require("nvim-treesitter.highlight").attach(0, "bash")
---   end,
--- })
-
--- add `pyright` to `skipped_servers` list
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
--- remove `jedi_language_server` from `skipped_servers` list
--- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "pylsp"
--- end, lvim.lsp.automatic_configuration.skipped_servers)
---
---
