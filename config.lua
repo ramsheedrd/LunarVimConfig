@@ -250,6 +250,22 @@ code_actions.setup {
 
 lvim.plugins = {
   {
+    'akinsho/flutter-tools.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require("flutter-tools").setup({
+        lsp = {
+          on_attach = function(client, bufnr)
+            vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>",
+              { noremap = true, silent = true })
+          end,
+        },
+      })
+    end
+  },
+  {
     "laytan/cloak.nvim",
     config = function()
       require("cloak").setup({
