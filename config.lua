@@ -99,6 +99,9 @@ lvim.builtin.which_key.mappings["h"] = {
   p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Prev" }
 }
 
+lvim.builtin.which_key.mappings["lo"] = { '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', "Open Definition in split" }
+lvim.builtin.which_key.mappings["bc"] = {
+  '<cmd>execute "bdelete" join(filter(range(1, bufnr("$")), "v:val != bufnr(\'%\')"))<cr>', "Close other buffers" }
 lvim.builtin.which_key.mappings["r"] = {
   name = 'Replace',
   r = { "<cmd>lua require('spectre').open_file_search()<CR>", "Replace In File" },
